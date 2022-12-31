@@ -33,7 +33,17 @@ function addChild(tree: Tree, treeNode: TreeNode, nodeId: string | null): Tree {
   return tree;
 }
 
-function addSiblingAfter(tree: Tree, treeNode: TreeNode, nodeId: string): Tree {
+function findNextSibling(tree: Tree, nodeId: string): string | null{
+  for(const key of Object.keys(tree)) {
+    if(tree[key].prevSibling === nodeId) {
+      return key;
+    }
+  }
+
+  return null;
+}
+
+function addSiblingAfter(tree: Tree, treeNode: TreeNode, nodeId: string, nextSiblingId?: string | null): Tree {
   if(nodeId === 'root') {
     return tree;
   }
@@ -41,6 +51,11 @@ function addSiblingAfter(tree: Tree, treeNode: TreeNode, nodeId: string): Tree {
   tree[treeNode.id] = treeNode;
   tree[treeNode.id].prevSibling = nodeId;
   tree[treeNode.id].parent = tree[nodeId].parent;
+
+  if(nextSiblingId) {
+    tree[nextSiblingId].prevSibling = treeNode.id;
+  }
+  
   return tree
 }
 
@@ -62,4 +77,5 @@ export {
   addChild,
   addSiblingAfter,
   addSiblingBefore,
+  findNextSibling,
 }
