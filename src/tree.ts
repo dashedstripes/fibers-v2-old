@@ -64,9 +64,15 @@ function addSiblingBefore(tree: Tree, treeNode: TreeNode, nodeId: string): Tree 
     return tree;
   }
 
+  const prevSiblingId = tree[nodeId].prevSibling;
+
   tree[treeNode.id] = treeNode;
   tree[nodeId].prevSibling = treeNode.id;
   tree[treeNode.id].parent = tree[nodeId].parent;
+
+  if(prevSiblingId) {
+    tree[treeNode.id].prevSibling = prevSiblingId;
+  }
   return tree
 }
 

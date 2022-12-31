@@ -5,7 +5,7 @@ import {
   buildDefaultTree, 
   createTreeNode, 
   createTreeNodeId, 
-  findNextSibling
+  findNextSibling,
 } from '../src/tree';
 
 test('should generate id', () => {
@@ -113,6 +113,49 @@ test('should correctly organize siblings when adding sibling (after) inbetween n
   // now we can get more complex by adding a node inbetween node1 and node2
 
   tree = addSiblingAfter(tree, node3, node1Id, node2Id);
+
+  expect(tree['root'].parent).toBe(null);
+  expect(tree['root'].prevSibling).toBe(null);
+
+  expect(tree[node1Id].parent).toBe('root');
+  expect(tree[node1Id].prevSibling).toBe(null);
+
+  expect(tree[node3Id].parent).toBe('root');
+  expect(tree[node3Id].prevSibling).toBe(node1Id);
+
+  expect(tree[node2Id].parent).toBe('root');
+  expect(tree[node2Id].prevSibling).toBe(node3Id);
+})
+
+test('should correctly organize siblings when adding sibling (before) inbetween nodes', () => {
+  const defaultTree = buildDefaultTree();
+
+  const node1Id = createTreeNodeId();
+  const node1 = createTreeNode(node1Id, 'node1');
+
+  const node2Id = createTreeNodeId();
+  const node2 = createTreeNode(node2Id, 'node2');
+
+  const node3Id = createTreeNodeId();
+  const node3 = createTreeNode(node3Id, 'node3');
+
+  let tree = addChild(defaultTree, node1, 'root');
+  tree = addSiblingAfter(tree, node2, node1Id);
+
+  // at this point, we should check it's been built correctly.
+
+  expect(tree['root'].parent).toBe(null);
+  expect(tree['root'].prevSibling).toBe(null);
+
+  expect(tree[node1Id].parent).toBe('root');
+  expect(tree[node1Id].prevSibling).toBe(null);
+
+  expect(tree[node2Id].parent).toBe('root');
+  expect(tree[node2Id].prevSibling).toBe(node1Id);
+
+  // now we can get more complex by adding a node inbetween node1 and node2
+
+  tree = addSiblingBefore(tree, node3, node2Id);
 
   expect(tree['root'].parent).toBe(null);
   expect(tree['root'].prevSibling).toBe(null);
