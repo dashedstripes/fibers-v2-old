@@ -12,12 +12,12 @@ const SubNode: React.FC<Props> = ({ tree, id, onAddChild }) => {
 
   return (
     <li>
-      <span>{tree[id].value}</span>
+      <span>{tree[id].id}</span>
       <button onClick={() => onAddChild(id)}>Add child</button>
 
       <ul>
         {children?.map((child) => (
-          <SubNode key={child} tree={tree} id={child} onAddChild={() => onAddChild(child)}/>
+          <SubNode key={child} tree={tree} id={child} onAddChild={(id) => onAddChild(id)}/>
         ))}
       </ul>
     </li>

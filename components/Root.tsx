@@ -20,7 +20,7 @@ const Root: React.FC = () => {
 
       <ul>
         {children?.map((child) => (
-          <SubNode key={child} tree={tree} id={child} onAddChild={() => handleAddChild(child)}/>
+          <SubNode key={child} tree={tree} id={child} onAddChild={(id) => handleAddChild(id)}/>
         ))}
       </ul>
 
