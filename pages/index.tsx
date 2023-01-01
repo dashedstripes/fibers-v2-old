@@ -1,7 +1,7 @@
-import Tree from "../components/Tree"
+import Root from "../components/Root"
 
 function HomePage() {
-  return <Tree/>
+  return <Root/>
 }
 
 export default HomePage

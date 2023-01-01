@@ -1,6 +1,6 @@
-type Tree = { [key: string]: TreeNode };
+export type Tree = { [key: string]: TreeNode };
 
-type TreeNode = {
+export type TreeNode = {
   id: string
   value: string
   parent: string | null
