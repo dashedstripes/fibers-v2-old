@@ -76,6 +76,18 @@ function addSiblingBefore(tree: Tree, treeNode: TreeNode, nodeId: string): Tree 
   return tree
 }
 
+function findChildren(tree: Tree, nodeId: string): string[] {
+  let children = [];
+
+  for(const key of Object.keys(tree)) {
+    if(tree[key].parent === nodeId) {
+      children.push(key);
+    }
+  }
+
+  return children;
+}
+
 export {
   buildDefaultTree,
   createTreeNodeId,
@@ -84,4 +96,5 @@ export {
   addSiblingAfter,
   addSiblingBefore,
   findNextSibling,
+  findChildren,
 }
