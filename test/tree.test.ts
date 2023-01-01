@@ -7,6 +7,7 @@ import {
   createTreeNodeId, 
   findChildren, 
   findNextSibling,
+  sortChildren,
 } from '../src/tree';
 
 test('should generate id', () => {
@@ -32,6 +33,33 @@ test('should add child after root node', () => {
   const newTree = addChild(tree, node, 'root');
 
   expect(newTree[id].parent).toBe('root');
+  expect(newTree[id].prevSibling).toBe(null);
+})
+
+test('should add multiple children after root node', () => {
+  const tree = buildDefaultTree();
+
+  const n1id = createTreeNodeId();
+  const n1 = createTreeNode(n1id, 'n1');
+
+  const n2id = createTreeNodeId();
+  const n2 = createTreeNode(n2id, 'n2');
+
+  const n3id = createTreeNodeId();
+  const n3 = createTreeNode(n3id, 'n3');
+
+  let newTree = addChild(tree, n1, 'root');
+  newTree = addChild(tree, n2, 'root', n1id);
+  newTree = addChild(tree, n3, 'root', n2id);
+
+  expect(newTree[n1id].parent).toBe('root');
+  expect(newTree[n1id].prevSibling).toBe(null);
+
+  expect(newTree[n2id].parent).toBe('root');
+  expect(newTree[n2id].prevSibling).toBe(n1id);
+
+  expect(newTree[n3id].parent).toBe('root');
+  expect(newTree[n3id].prevSibling).toBe(n2id);
 })
 
 test('should not add sibling after root', () => {
@@ -72,17 +100,18 @@ test('should add sibling before any node below root', () => {
 
   const node1Id = createTreeNodeId();
   const node1 = createTreeNode(node1Id, 'node1');
-  let newTree = addChild(tree, node1, 'root');
-  const n1PrevSibling = newTree[node1Id].prevSibling;
 
   const node2Id = createTreeNodeId();
   const node2 = createTreeNode(node2Id, 'node2');
+
+  let newTree = addChild(tree, node1, 'root');
   newTree = addSiblingBefore(newTree, node2, node1Id);
 
-  expect(newTree[node2Id].prevSibling).toBe(n1PrevSibling);
+  expect(newTree[node2Id].prevSibling).toBe(null);
   expect(newTree[node2Id].parent).toBe('root');
 
   expect(newTree[node1Id].prevSibling).toBe(node2Id);
+  expect(newTree[node1Id].parent).toBe('root');
 })
 
 test('should correctly organize siblings when adding sibling (after) inbetween nodes', () => {
@@ -233,4 +262,51 @@ test('should add nested children', () => {
 
   expect(tree[node3Id].parent).toBe(node2Id);
   expect(tree[node3Id].prevSibling).toBe(null);
+})
+
+test('should sort children correctly when adding siblings after', () => {
+  const defaultTree = buildDefaultTree();
+
+  const node1Id = createTreeNodeId();
+  const node1 = createTreeNode(node1Id, 'node1');
+
+  const node2Id = createTreeNodeId();
+  const node2 = createTreeNode(node2Id, 'node2');
+
+  const node3Id = createTreeNodeId();
+  const node3 = createTreeNode(node3Id, 'node3');
+
+  let tree = addChild(defaultTree, node1, 'root');
+  tree = addSiblingAfter(tree, node2, node1Id);
+  tree = addSiblingAfter(tree, node3, node2Id);
+
+  const children = findChildren(tree, 'root');
+
+  expect(sortChildren(tree, children)).toStrictEqual([node1Id, node2Id, node3Id]);
+})
+
+test('should sort children correctly when adding siblings before', () => {
+  const defaultTree = buildDefaultTree();
+
+  const node1Id = createTreeNodeId();
+  const node1 = createTreeNode(node1Id, 'node1');
+
+  const node2Id = createTreeNodeId();
+  const node2 = createTreeNode(node2Id, 'node2');
+
+  const node3Id = createTreeNodeId();
+  const node3 = createTreeNode(node3Id, 'node3');
+
+  let tree = addChild(defaultTree, node1, 'root');
+  tree = addSiblingBefore(tree, node2, node1Id);
+  tree = addSiblingBefore(tree, node3, node2Id);
+
+  const children = findChildren(tree, 'root');
+  const sortedChildren = sortChildren(tree, children);
+
+  expect(children.includes(node1Id)).toBe(true);
+  expect(children.includes(node2Id)).toBe(true);
+  expect(children.includes(node3Id)).toBe(true);
+
+  expect(sortedChildren).toStrictEqual([node3Id, node2Id, node1Id]);
 })

@@ -27,9 +27,14 @@ function buildDefaultTree() {
   return tree;
 }
 
-function addChild(tree: Tree, treeNode: TreeNode, nodeId: string | null): Tree {
+function addChild(tree: Tree, treeNode: TreeNode, nodeId: string | null, prevSiblingId?: string | null): Tree {
   tree[treeNode.id] = treeNode;
   tree[treeNode.id].parent = nodeId;
+
+  if(prevSiblingId) {
+    tree[treeNode.id].prevSibling = prevSiblingId;
+  }
+
   return tree;
 }
 
@@ -88,6 +93,24 @@ function findChildren(tree: Tree, nodeId: string): string[] {
   return children;
 }
 
+function sortChildren(tree: Tree, children: string[]): string[] {
+  let sorted = [];
+  let last = null;
+  let i = 0;
+
+  while(i < children.length) {
+    for(const key of children) {
+      if(tree[key].prevSibling === last) {
+        sorted.push(key);
+        last = key;
+        i++;
+      }
+    }
+  }
+
+  return sorted;
+}
+
 export {
   buildDefaultTree,
   createTreeNodeId,
@@ -97,4 +120,5 @@ export {
   addSiblingBefore,
   findNextSibling,
   findChildren,
+  sortChildren,
 }
