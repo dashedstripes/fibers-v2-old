@@ -205,3 +205,32 @@ test('should find children for a given node', () => {
   expect(foundChildren).toContain(node1Id);
   expect(foundChildren).toContain(node2Id);
 })
+
+test('should add nested children', () => {
+  const defaultTree = buildDefaultTree();
+
+  const node1Id = createTreeNodeId();
+  const node1 = createTreeNode(node1Id, 'node1');
+
+  const node2Id = createTreeNodeId();
+  const node2 = createTreeNode(node2Id, 'node2');
+
+  const node3Id = createTreeNodeId();
+  const node3 = createTreeNode(node3Id, 'node3');
+
+  let tree = addChild(defaultTree, node1, 'root');
+  tree = addChild(tree, node2, node1Id);
+  tree = addChild(tree, node3, node2Id);
+
+  expect(tree['root'].parent).toBe(null);
+  expect(tree['root'].prevSibling).toBe(null);
+
+  expect(tree[node1Id].parent).toBe('root');
+  expect(tree[node1Id].prevSibling).toBe(null);
+
+  expect(tree[node2Id].parent).toBe(node1Id);
+  expect(tree[node2Id].prevSibling).toBe(null);
+
+  expect(tree[node3Id].parent).toBe(node2Id);
+  expect(tree[node3Id].prevSibling).toBe(null);
+})
