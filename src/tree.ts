@@ -94,16 +94,22 @@ function findChildren(tree: Tree, nodeId: string): string[] {
 }
 
 function sortChildren(tree: Tree, children: string[]): string[] {
+  if(!tree && !children) {
+    return [];
+  }
+  
   let sorted = [];
   let last = null;
-  let i = 0;
 
-  while(i < children.length) {
+  while(sorted.length < children.length) {
     for(const key of children) {
+      if(!tree.hasOwnProperty(key)) {
+        return children;
+      }
+
       if(tree[key].prevSibling === last) {
         sorted.push(key);
         last = key;
-        i++;
       }
     }
   }

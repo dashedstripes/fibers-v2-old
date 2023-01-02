@@ -310,3 +310,19 @@ test('should sort children correctly when adding siblings before', () => {
 
   expect(sortedChildren).toStrictEqual([node3Id, node2Id, node1Id]);
 })
+
+test('should return original children if tree does not contain any child', () => {
+  const children = ['one', 'two'];
+  const sortedChildren = sortChildren({}, children);
+  expect(sortedChildren).toStrictEqual(children);
+})
+
+test('should return empty array when sorting children if no children provided', () => {
+  const sortedChildren = sortChildren({}, []);
+  expect(sortedChildren).toStrictEqual([]);
+})
+
+test('should return empty array if invalid sortChildren params', () => {
+  const sortedChildren = sortChildren(null, null);
+  expect(sortedChildren).toStrictEqual([]);
+})
