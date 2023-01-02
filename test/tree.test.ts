@@ -326,3 +326,29 @@ test('should return empty array if invalid sortChildren params', () => {
   const sortedChildren = sortChildren(null, null);
   expect(sortedChildren).toStrictEqual([]);
 })
+
+test('should add child to end of children', () => {
+  const tree = buildDefaultTree();
+
+  const node1Id = createTreeNodeId();
+  const node1 = createTreeNode(node1Id, 'node1');  
+
+  const node2Id = createTreeNodeId();
+  const node2 = createTreeNode(node2Id, 'node2');
+
+  const node3Id = createTreeNodeId();
+  const node3 = createTreeNode(node2Id, 'node3');
+
+  let newTree = addChild(tree, node1, 'root');
+  newTree = addChild(newTree, node2, node1Id);
+  newTree = addChild(newTree, node3, node1Id);
+
+  expect(newTree[node1Id].prevSibling).toBe(null);
+  expect(newTree[node1Id].parent).toBe('root');
+
+  expect(newTree[node3Id].prevSibling).toBe(null);
+  expect(newTree[node3Id].parent).toBe(node1Id);
+
+  expect(newTree[node2Id].prevSibling).toBe(node3Id);
+  expect(newTree[node2Id].parent).toBe(node1Id);
+})
