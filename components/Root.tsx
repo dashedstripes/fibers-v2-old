@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { addChild, addSiblingBefore, buildDefaultTree, createTreeNode, createTreeNodeId, findChildren, sortChildren, Tree, TreeNode } from '../src/tree';
+import { addChild, addSiblingAfter, addSiblingBefore, buildDefaultTree, createTreeNode, createTreeNodeId, findChildren, sortChildren, Tree, TreeNode } from '../src/tree';
 import SubNode from './SubNode';
 
 const Root: React.FC = () => {
@@ -17,8 +17,15 @@ const Root: React.FC = () => {
 
   function handleAddSiblingBefore(id: string) {
     const nid = createTreeNodeId();
-    const n = createTreeNode(nid, 'child');
+    const n = createTreeNode(nid, 'sibling-before');
     const t = addSiblingBefore({...tree}, n, id);
+    setTree(t);
+  }
+
+  function handleAddSiblingAfter(id: string, nextSiblingId: string) {
+    const nid = createTreeNodeId();
+    const n = createTreeNode(nid, 'sibling-after');
+    const t = addSiblingAfter({...tree}, n, id, nextSiblingId);
     setTree(t);
   }
 
@@ -32,9 +39,10 @@ const Root: React.FC = () => {
               key={child} 
               tree={tree}
               id={child} 
-              prevSiblingId={sortedChildren[index - 1] || null}
+              nextSiblingId={sortedChildren[index + 1]}
               onAddChild={(id, prevSibling) => handleAddChild(id, prevSibling)}
               onAddSiblingBefore={(id) => handleAddSiblingBefore(id)}
+              onAddSiblingAfter={(id, nextSiblingId) => handleAddSiblingAfter(id, nextSiblingId)}
             />
           ))}
           <button onClick={() => handleAddChild('root', sortedChildren[sortedChildren.length - 1])}>Add Child</button>
