@@ -4,6 +4,7 @@ import { findChildren, sortChildren, Tree } from '../src/tree';
 interface Props {
   tree: Tree;
   id: string;
+  prevSiblingId: string;
   onAddChild: (id: string, prevSibling: string | null) => void;
   onAddSiblingBefore: (id: string) => void;
 }
@@ -11,6 +12,7 @@ interface Props {
 const SubNode: React.FC<Props> = ({ 
   tree, 
   id, 
+  prevSiblingId,
   onAddChild,
   onAddSiblingBefore,
 }) => {
@@ -21,7 +23,7 @@ const SubNode: React.FC<Props> = ({
     <li>
       <span>{tree[id].id}</span>
       <button onClick={() => onAddSiblingBefore(id)}>Add sibling before</button>
-      <button onClick={() => onAddChild(id, null)}>Add child</button>
+      <button onClick={() => onAddChild(id, sortedChildren[sortedChildren.length - 1])}>Add child</button>
 
       <ul>
         {sortedChildren?.map((child, index) => (
@@ -29,7 +31,8 @@ const SubNode: React.FC<Props> = ({
             key={child} 
             tree={tree} 
             id={child} 
-            onAddChild={(id) => onAddChild(id, sortChildren[index - 1])}
+            prevSiblingId={sortedChildren[index - 1] || null}
+            onAddChild={(id, prevSiblingId) => onAddChild(id, prevSiblingId)}
             onAddSiblingBefore={(id) => onAddSiblingBefore(id)}
           />
         ))}

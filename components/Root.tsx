@@ -27,11 +27,12 @@ const Root: React.FC = () => {
       <li>
         <span>root</span>
         <ul>
-          {sortedChildren?.map((child) => (
+          {sortedChildren?.map((child, index) => (
             <SubNode 
               key={child} 
-              tree={tree} 
+              tree={tree}
               id={child} 
+              prevSiblingId={sortedChildren[index - 1] || null}
               onAddChild={(id, prevSibling) => handleAddChild(id, prevSibling)}
               onAddSiblingBefore={(id) => handleAddSiblingBefore(id)}
             />

@@ -337,18 +337,18 @@ test('should add child to end of children', () => {
   const node2 = createTreeNode(node2Id, 'node2');
 
   const node3Id = createTreeNodeId();
-  const node3 = createTreeNode(node2Id, 'node3');
+  const node3 = createTreeNode(node3Id, 'node3');
 
   let newTree = addChild(tree, node1, 'root');
   newTree = addChild(newTree, node2, node1Id);
-  newTree = addChild(newTree, node3, node1Id);
+  newTree = addChild(newTree, node3, node1Id, node2Id);
 
   expect(newTree[node1Id].prevSibling).toBe(null);
   expect(newTree[node1Id].parent).toBe('root');
 
-  expect(newTree[node3Id].prevSibling).toBe(null);
-  expect(newTree[node3Id].parent).toBe(node1Id);
-
-  expect(newTree[node2Id].prevSibling).toBe(node3Id);
+  expect(newTree[node2Id].prevSibling).toBe(null);
   expect(newTree[node2Id].parent).toBe(node1Id);
+
+  expect(newTree[node3Id].prevSibling).toBe(node2Id);
+  expect(newTree[node3Id].parent).toBe(node1Id);
 })
