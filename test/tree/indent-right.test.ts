@@ -48,6 +48,15 @@ test('first child should not indent right', () => {
 
   let newTree = addChild(tree, node1, 'root');
 
+  // ensure tree is built correctly
+  expect(newTree['root'].prevSibling).toBe(null);
+  expect(newTree['root'].parent).toBe(null);
+
+  expect(newTree[node1Id].prevSibling).toBe(null);
+  expect(newTree[node1Id].parent).toBe('root');
+
+  newTree = indentRight(tree, node1Id, 'root', null, null);
+
   expect(newTree['root'].prevSibling).toBe(null);
   expect(newTree['root'].parent).toBe(null);
 
