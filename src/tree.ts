@@ -121,11 +121,11 @@ function indentRight(
   tree: Tree, 
   id: string, 
   newParentId: string, 
-  prevSiblingId: string | null, 
+  newPrevSiblingId: string | null, 
   originalNextSiblingId: string | null
 ) {
   tree[id].parent = newParentId;
-  tree[id].prevSibling = prevSiblingId;
+  tree[id].prevSibling = newPrevSiblingId;
 
   if(originalNextSiblingId) {
     tree[originalNextSiblingId].prevSibling = newParentId;
