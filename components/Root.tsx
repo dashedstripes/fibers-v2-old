@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { addChild, addSiblingAfter, addSiblingBefore, buildDefaultTree, createTreeNode, createTreeNodeId, findChildren, sortChildren, Tree, TreeNode } from '../src/tree';
+import { addChild, addSiblingAfter, addSiblingBefore, buildDefaultTree, createTreeNode, createTreeNodeId, findChildren, indentRight, sortChildren, Tree, TreeNode } from '../src/tree';
 import SubNode from './SubNode';
 
 const Root: React.FC = () => {
@@ -29,6 +29,16 @@ const Root: React.FC = () => {
     setTree(t);
   }
 
+  function handleIndentRight(
+    id: string, 
+    newParentId: string, 
+    newPrevSiblingId: string | null, 
+    originalNextSiblingId: string | null
+  ) {
+    const t = indentRight({...tree}, id, newParentId, newPrevSiblingId, originalNextSiblingId);
+    setTree(t);
+  }
+
   return (
     <ul>
       <li>
@@ -39,10 +49,12 @@ const Root: React.FC = () => {
               key={child} 
               tree={tree}
               id={child} 
-              nextSiblingId={sortedChildren[index + 1]}
+              prevSiblingId={sortedChildren[index - 1] || null}
+              nextSiblingId={sortedChildren[index + 1] || null}
               onAddChild={(id, prevSibling) => handleAddChild(id, prevSibling)}
               onAddSiblingBefore={(id) => handleAddSiblingBefore(id)}
               onAddSiblingAfter={(id, nextSiblingId) => handleAddSiblingAfter(id, nextSiblingId)}
+              onIndentRight={(id, newParentId, newPrevSiblingId, originalNextSiblingId) => handleIndentRight(id, newParentId, newPrevSiblingId, originalNextSiblingId)}
             />
           ))}
           <button onClick={() => handleAddChild('root', sortedChildren[sortedChildren.length - 1])}>Add Child</button>

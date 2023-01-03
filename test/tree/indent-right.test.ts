@@ -64,6 +64,30 @@ test('first child should not indent right', () => {
   expect(newTree[node1Id].parent).toBe('root');
 })
 
+test('should return original tree if newParentId is null', () => {
+  const tree = buildDefaultTree();
+
+  const node1Id = createTreeNodeId();
+  const node1 = createTreeNode(node1Id, 'node1');
+
+  let newTree = addChild(tree, node1, 'root');
+
+  // ensure tree is built correctly
+  expect(newTree['root'].prevSibling).toBe(null);
+  expect(newTree['root'].parent).toBe(null);
+
+  expect(newTree[node1Id].prevSibling).toBe(null);
+  expect(newTree[node1Id].parent).toBe('root');
+
+  newTree = indentRight(tree, node1Id, null, null, null);
+
+  expect(newTree['root'].prevSibling).toBe(null);
+  expect(newTree['root'].parent).toBe(null);
+
+  expect(newTree[node1Id].prevSibling).toBe(null);
+  expect(newTree[node1Id].parent).toBe('root');
+})
+
 test('should correctly indent right middle child', () => {
   const tree = buildDefaultTree();
 

@@ -120,10 +120,14 @@ function sortChildren(tree: Tree, children: string[]): string[] {
 function indentRight(
   tree: Tree, 
   id: string, 
-  newParentId: string, 
+  newParentId: string | null, 
   newPrevSiblingId: string | null, 
   originalNextSiblingId: string | null
 ) {
+  if(!newParentId) {
+    return tree;
+  }
+  
   tree[id].parent = newParentId;
   tree[id].prevSibling = newPrevSiblingId;
 
