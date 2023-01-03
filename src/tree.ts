@@ -117,9 +117,19 @@ function sortChildren(tree: Tree, children: string[]): string[] {
   return sorted;
 }
 
-function indentRight(tree: Tree, id: string, prevSibling: string | null) {
-  tree[id].parent = prevSibling;
-  tree[id].prevSibling = null;
+function indentRight(
+  tree: Tree, 
+  id: string, 
+  newParentId: string, 
+  prevSiblingId: string | null, 
+  originalNextSiblingId: string | null
+) {
+  tree[id].parent = newParentId;
+  tree[id].prevSibling = prevSiblingId;
+
+  if(originalNextSiblingId) {
+    tree[originalNextSiblingId].prevSibling = newParentId;
+  }
   return tree;
 }
 
