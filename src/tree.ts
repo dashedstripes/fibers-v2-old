@@ -117,6 +117,12 @@ function sortChildren(tree: Tree, children: string[]): string[] {
   return sorted;
 }
 
+function indentRight(tree: Tree, id: string, prevSibling: string | null) {
+  tree[id].parent = prevSibling;
+  tree[id].prevSibling = null;
+  return tree;
+}
+
 export {
   buildDefaultTree,
   createTreeNodeId,
@@ -127,4 +133,5 @@ export {
   findNextSibling,
   findChildren,
   sortChildren,
+  indentRight,
 }
