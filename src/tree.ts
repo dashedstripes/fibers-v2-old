@@ -152,7 +152,7 @@ function indentLeft(
   tree[id].prevSibling = newPrevSiblingId;
 
   if(newNextSiblingId) {
-    tree[newNextSiblingId].prevSibling = newParentId;
+    tree[newNextSiblingId].prevSibling = id;
   }
   return tree;
 }
