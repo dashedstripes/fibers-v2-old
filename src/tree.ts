@@ -27,9 +27,9 @@ function buildDefaultTree() {
   return tree;
 }
 
-function addChild(tree: Tree, treeNode: TreeNode, nodeId: string | null, prevSiblingId?: string | null): Tree {
+function addChild(tree: Tree, treeNode: TreeNode, newParentId: string | null, prevSiblingId?: string | null): Tree {
   tree[treeNode.id] = treeNode;
-  tree[treeNode.id].parent = nodeId;
+  tree[treeNode.id].parent = newParentId;
 
   if(prevSiblingId) {
     tree[treeNode.id].prevSibling = prevSiblingId;
@@ -137,6 +137,26 @@ function indentRight(
   return tree;
 }
 
+function indentLeft(
+  tree: Tree, 
+  id: string, 
+  newParentId: string | null, 
+  newPrevSiblingId: string | null, 
+  newNextSibling: string | null
+) {
+  if(!newParentId) {
+    return tree;
+  }
+  
+  tree[id].parent = newParentId;
+  tree[id].prevSibling = newPrevSiblingId;
+
+  if(newNextSibling) {
+    tree[newNextSibling].prevSibling = newParentId;
+  }
+  return tree;
+}
+
 export {
   buildDefaultTree,
   createTreeNodeId,
@@ -148,4 +168,5 @@ export {
   findChildren,
   sortChildren,
   indentRight,
+  indentLeft,
 }
