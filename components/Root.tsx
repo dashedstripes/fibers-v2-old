@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { addChild, addSiblingAfter, addSiblingBefore, buildDefaultTree, createTreeNode, createTreeNodeId, findChildren, indentLeft, indentRight, sortChildren, Tree, TreeNode } from '../src/tree';
+import { addChild, addSiblingAfter, addSiblingBefore, buildDefaultTree, createTreeNode, createTreeNodeId, findChildren, indentLeft, indentRight, sortChildren, Tree } from '../src/tree';
 import SubNode from './SubNode';
 
 const Root: React.FC = () => {
@@ -59,7 +59,7 @@ const Root: React.FC = () => {
               key={child} 
               tree={tree}
               id={child} 
-              parentId={null}
+              parentId={'root'}
               prevSiblingId={sortedChildren[index - 1] || null}
               nextSiblingId={sortedChildren[index + 1] || null}
               onAddChild={(id, prevSibling) => handleAddChild(id, prevSibling)}
