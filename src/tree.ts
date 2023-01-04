@@ -142,7 +142,7 @@ function indentLeft(
   id: string, 
   newParentId: string | null, 
   newPrevSiblingId: string | null, 
-  newNextSibling: string | null
+  newNextSiblingId: string | null
 ) {
   if(!newParentId) {
     return tree;
@@ -151,8 +151,8 @@ function indentLeft(
   tree[id].parent = newParentId;
   tree[id].prevSibling = newPrevSiblingId;
 
-  if(newNextSibling) {
-    tree[newNextSibling].prevSibling = newParentId;
+  if(newNextSiblingId) {
+    tree[newNextSiblingId].prevSibling = newParentId;
   }
   return tree;
 }
