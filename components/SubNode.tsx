@@ -36,9 +36,12 @@ const SubNode: React.FC<Props> = ({
   }
 
   function handleIndentLeft() {
-    const grandparentChildren = findChildren(tree, tree[parentId].parent);
+    const grandparentChildren = findChildren(tree, tree[parentId]?.parent);
     const indexOfParent = grandparentChildren.findIndex((id) => id === parentId);
-    onIndentLeft(id, tree[parentId].parent, parentId, grandparentChildren[indexOfParent + 1]);
+
+    console.log(grandparentChildren, tree);
+    console.log(id, tree[parentId].parent, parentId, grandparentChildren[indexOfParent + 1])
+    // onIndentLeft(id, tree[parentId].parent, parentId, grandparentChildren[indexOfParent + 1]);
   }
 
   return (

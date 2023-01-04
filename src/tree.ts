@@ -82,6 +82,10 @@ function addSiblingBefore(tree: Tree, treeNode: TreeNode, nodeId: string): Tree 
 }
 
 function findChildren(tree: Tree, nodeId: string): string[] {
+  if(!nodeId) {
+    return [];
+  }
+
   let children = [];
 
   for(const key of Object.keys(tree)) {

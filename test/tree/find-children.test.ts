@@ -18,3 +18,9 @@ test('should find children for a given node', () => {
   expect(foundChildren).toContain(node1Id);
   expect(foundChildren).toContain(node2Id);
 })
+
+test('should return original array if id is null', () => {
+  const defaultTree = buildDefaultTree();
+  const foundChildren = findChildren(defaultTree, null);
+  expect(foundChildren.length).toBe(0);
+})
